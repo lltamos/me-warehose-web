@@ -73,6 +73,8 @@ const constantRoutes = [
 
 import MultilevelMenuExample from './modules/multilevel.menu.example'
 import BreadcrumbExample from './modules/breadcrumb.example'
+import upms from './modules/upms/upms'
+import tms from './modules/tms/tms'
 
 // 当 children 不为空的主导航只有一项时，则隐藏
 let asyncRoutes = [
@@ -85,7 +87,27 @@ let asyncRoutes = [
             MultilevelMenuExample,
             BreadcrumbExample
         ]
+    },
+    {
+        meta: {
+            title: 'IddS',
+            icon: 'sidebar-default'
+        },
+        children: [
+            upms
+
+        ]
+    },
+    {
+        meta: {
+            title: 'TMS',
+            icon: 'sidebar-default'
+        },
+        children: [
+            tms
+        ]
     }
+
 ]
 
 const lastRoute = [{
@@ -132,7 +154,7 @@ router.beforeEach(async(to, from, next) => {
         accessRoutes.forEach(route => {
             router.addRoute(route)
         })
-        next({ ...to, replace: true })
+        next({...to, replace: true})
     }
     if (store.state.menu.isGenerate) {
         store.commit('menu/setHeaderActived', to.path)
