@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-dialog :visible.sync="myVisible" :title="id == '' ? '新增试题管理' : '编辑试题管理'" width="600px" :close-on-click-modal="false" append-to-body destroy-on-close>
+        <el-dialog :visible.sync="myVisible" :title="id == '' ? '新增试题列表' : '编辑试题列表'" width="600px" :close-on-click-modal="false" append-to-body destroy-on-close>
             <DetailForm v-if="myVisible" ref="form" v-bind="$props" />
             <div slot="footer">
                 <el-button @click="onCancel">取 消</el-button>

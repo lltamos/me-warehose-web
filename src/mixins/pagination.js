@@ -9,6 +9,7 @@ export default {
                 size: 10,
                 total: 0,
                 sizes: [10, 20, 50, 100],
+                pageType: 1,
                 layout: 'total, sizes, ->, prev, pager, next, jumper'
             }
         }
@@ -16,8 +17,9 @@ export default {
     methods: {
         getParams(params = {}) {
             const baseParams = {
-                from: (this.pagination.page - 1) * this.pagination.size,
-                limit: this.pagination.size
+                page: this.pagination.page,
+                limit: this.pagination.size,
+                pageType: this.pagination.pageType
             }
             if (this.sort && this.order) {
                 baseParams.sort = this.sort

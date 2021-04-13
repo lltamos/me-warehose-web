@@ -1,6 +1,6 @@
 <template>
     <div>
-        <page-header :title="$route.name == 'routerName' ? '新增试题管理' : '编辑试题管理'">
+        <page-header :title="$route.name == 'routerName' ? '新增试题列表' : '编辑试题列表'">
             <el-button icon="el-icon-arrow-left" size="mini" round @click="$router.go(-1)">返 回</el-button>
         </page-header>
         <page-main>

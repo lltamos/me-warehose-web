@@ -33,8 +33,8 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 20px;
-    padding: 16px 20px;
+    margin-bottom: 8px;
+    padding: 12px 14px;
     background: #fff;
     border-bottom: 1px solid #e8eaec;
     .title {

@@ -1,14 +1,14 @@
 <template>
     <div>
-        <page-header title="试题管理管理" />
+        <page-header title="试题列表管理"/>
         <page-main>
-            <el-button type="primary" icon="el-icon-plus" @click="onCreate">新增试题管理</el-button>
+            <el-button type="primary" icon="el-icon-plus" @click="onCreate">新增试题</el-button>
             <search-bar>
-                <el-form :model="search" size="small" label-width="100px" label-suffix="：">
+                <el-form :model="search" size="small" label-suffix="：">
                     <el-row>
                         <el-col :span="12">
                             <el-form-item label="标题">
-                                <el-input v-model="search.title" placeholder="请输入标题，支持模糊查询" clearable
+                                <el-input v-model="search.title" placeholder="请输入标题" clearable
                                           @keydown.enter.native="getDataList" @clear="getDataList"
                                 />
                             </el-form-item>
@@ -32,8 +32,15 @@
                       highlight-current-row @sort-change="onSortChange"
                       @selection-change="batch.selectionDataList = $event"
             >
-                <el-table-column v-if="batch.enable" type="selection" width="40" />
-                <el-table-column prop="title" label="标题" />
+                <el-table-column v-if="batch.enable" type="selection" width="40"/>
+                <el-table-column prop="id" width="75" label="ID"/>
+                <el-table-column prop="tigan" label="题干">
+                    <template slot-scope="scope">
+                        <div v-html="scope.row.tigan"></div>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="txStr" width="75" label="题型"/>
+
                 <el-table-column label="操作" width="250" align="center">
                     <template slot-scope="scope">
                         <el-button type="primary" size="mini" plain @click="onEdit(scope.row)">编辑</el-button>
@@ -46,7 +53,7 @@
                            class="pagination" background @size-change="onSizeChange" @current-change="onCurrentChange"
             />
         </page-main>
-        <FormDialog :id="detailFormDialog.id" :visible.sync="detailFormDialog.visible" @success="getDataList" />
+        <FormDialog :id="detailFormDialog.id" :visible.sync="detailFormDialog.visible" @success="getDataList"/>
     </div>
 </template>
 
@@ -72,16 +79,11 @@ export default {
         if (!this.$store.state.settings.enableTabbar && !this.dialogMode) {
             // 因为并不是所有的路由跳转都需要将当前页面进行缓存，例如最常见的情况，从列表页进入详情页，则需要将列表页缓存，而从列表页跳转到其它页面，则不需要将列表页缓存
             // 所以下面的代码意思就是，如果目标路由的 name 不在指定的数组内，则将当前页面的 name 从 keep-alive 中删除
-            if (!['XX'].includes(to.name)) {
-                // 注意：上面校验的是路由的 name ，下面记录的是当前页面的 name
-                this.$store.commit('keepAlive/remove', 'TikuQuestionTestList')
-            }
         }
         next()
     },
     data() {
         return {
-            // 是否开启详情弹框模式
             dialogMode: true,
             // 详情弹框
             detailFormDialog: {
@@ -103,28 +105,22 @@ export default {
     },
     mounted() {
         this.getDataList()
-        if (!this.dialogMode) {
-            this.$eventBus.$on('get-data-list', () => {
-                this.getDataList()
-            })
-        }
     },
     beforeDestroy() {
-        if (!this.dialogMode) {
-            this.$eventBus.$off('get-data-list')
-        }
+
     },
     methods: {
         getDataList() {
             this.loading = true
             let params = this.getParams()
             this.search.title && (params.title = this.search.title)
-            this.$api.get('mock/tiku/question_test/list', {
+            this.$route.query.testRepsId && (params.testRepsId = this.$route.params.testRepsId)
+            this.$api.get('/tms/test/list', {
                 params
             }).then(res => {
                 this.loading = false
                 this.dataList = res.data.list
-                this.pagination.total = res.data.total
+                this.pagination.total = res.data.totalRow
             })
         },
         onCreate() {
@@ -137,18 +133,8 @@ export default {
                 this.detailFormDialog.visible = true
             }
         },
-        onEdit(row) {
-            if (!this.dialogMode) {
-                this.$router.push({
-                    name: 'XX',
-                    params: {
-                        id: row.id
-                    }
-                })
-            } else {
-                this.detailFormDialog.id = row.id
-                this.detailFormDialog.visible = true
-            }
+        onEdit() {
+
         },
         onDel(row) {
             this.$confirm(`确认删除「${row.title}」吗？`, '确认信息').then(() => {

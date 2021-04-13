@@ -59,7 +59,7 @@ module.exports = [
             })
             return {
                 error: '',
-                state: 1,
+                code: 200,
                 data: {
                     list: pageList,
                     total: list.length
@@ -74,7 +74,7 @@ module.exports = [
             let info = AllList.filter(item => item.id == option.query.id)
             return {
                 error: '',
-                state: 1,
+                code: 200,
                 data: info[0]
             }
         }
@@ -84,7 +84,7 @@ module.exports = [
         type: 'post',
         result: {
             error: '',
-            state: 1,
+            code: 200,
             data: {
                 isSuccess: true
             }
@@ -95,7 +95,7 @@ module.exports = [
         type: 'post',
         result: {
             error: '',
-            state: 1,
+            code: 200,
             data: {
                 isSuccess: true
             }
@@ -106,7 +106,7 @@ module.exports = [
         type: 'post',
         result: {
             error: '',
-            state: 1,
+            code: 200,
             data: {
                 isSuccess: true
             }

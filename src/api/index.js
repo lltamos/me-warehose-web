@@ -2,7 +2,7 @@ import axios from 'axios'
 // import Qs from 'qs'
 import router from '@/router/index'
 import store from '@/store/index'
-import { Message } from 'element-ui'
+import {Message} from 'element-ui'
 
 const toLogin = () => {
     router.push({
@@ -53,12 +53,16 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
     response => {
-        if (response.data.error != '') {
+        if (response.data.code != 200) {
             // 如果接口请求时发现 token 失效，则立马跳转到登录页
-            if (response.data.status == 0) {
+            if (response.data.code == 302 || response.data.code == 402) {
                 toLogin()
+                return false
             }
-            Message.error(response.data.error)
+            Message.error({
+                message: response.data.error,
+                type: 'warning'
+            })
             return Promise.reject(response.data)
         }
         return Promise.resolve(response.data)

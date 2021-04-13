@@ -26,6 +26,7 @@ export default {
             redirect: '/multilevel_menu_example/level2/page',
             meta: {
                 title: '导航2'
+
             },
             children: [
                 {

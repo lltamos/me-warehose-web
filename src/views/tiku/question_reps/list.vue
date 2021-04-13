@@ -1,33 +1,44 @@
 <template>
     <div>
-        <page-header title="试题库管理" />
+        <page-header title="题库管理"/>
         <page-main>
-            <el-button type="primary" icon="el-icon-plus" @click="onCreate">新增试题库</el-button>
-            <search-bar>
-                <el-form :model="search" size="small" label-width="100px" label-suffix="：">
+            <search-bar show-more @toggle="searchMore = $event">
+                <el-form :model="search" size="small" label-width="120px">
                     <el-row>
                         <el-col :span="12">
                             <el-form-item label="试题库名称">
-                                <el-input v-model="search.title" placeholder="请输入试题库名称，支持模糊查询" clearable @keydown.enter.native="getDataList" @clear="getDataList" />
+                                <el-input v-model="search.name" placeholder="请输入试题库名称，支持模糊查询" clearable/>
                             </el-form-item>
                         </el-col>
                     </el-row>
                     <el-form-item>
-                        <el-button type="primary" icon="el-icon-search" @click="getDataList">筛 选</el-button>
+                        <el-button type="primary" icon="el-icon-search">筛选</el-button>
                     </el-form-item>
                 </el-form>
             </search-bar>
-            <el-table ref="table" v-loading="loading" class="list-table" :data="dataList" border stripe highlight-current-row @sort-change="onSortChange">
-                <el-table-column prop="name" label="题库名" />
-                <el-table-column prop="tmsKindTypeStr" label="所属学院" />
+            <el-table ref="table" v-loading="loading" class="list-table" :data="dataList" border stripe
+                      highlight-current-row
+            >
+                <el-table-column prop="id" width="75" label="ID"/>
+                <el-table-column prop="name" min-width="125" label="题库名"/>
+                <el-table-column prop="tmsKindTypeStr" label="所属学院"/>
+                <el-table-column prop="singleChoice" label="单选题"/>
+                <el-table-column prop="multipleChoice" label="多选题"/>
+                <el-table-column prop="verdict" label="判断题"/>
+                <el-table-column prop="interpose" label="填空题"/>
+                <el-table-column prop="shortAnswer" label="简答题"/>
+                <el-table-column prop="groupQuestion" label="组合题"/>
+                <el-table-column prop="totalQuestion" label="总题数"/>
                 <el-table-column label="操作" width="250" align="center">
                     <template slot-scope="scope">
-                        <el-button type="primary" size="mini" plain @click="onEdit(scope.row)">编辑</el-button>
-                        <el-button type="danger" size="mini" plain @click="onDel(scope.row)">删除</el-button>
+                        <el-button type="primary" plain @click="goTestPage(scope.row)">试题管理</el-button>
                     </template>
                 </el-table-column>
             </el-table>
-            <el-pagination :current-page="pagination.page" :total="pagination.total" :page-size="pagination.size" :page-sizes="pagination.sizes" :layout="pagination.layout" :hide-on-single-page="false" class="pagination" background @size-change="onSizeChange" @current-change="onCurrentChange" />
+            <el-pagination :current-page="pagination.page" :total="pagination.total" :page-size="pagination.size"
+                           :page-sizes="pagination.sizes" :layout="pagination.layout" :hide-on-single-page="false"
+                           class="pagination" background @size-change="onSizeChange" @current-change="onCurrentChange"
+            />
         </page-main>
     </div>
 </template>
@@ -37,22 +48,20 @@ import paginationMixin from '@/mixins/pagination'
 
 export default {
     name: 'TikuQuestionRepsList',
-    components: {
-    },
     mixins: [paginationMixin],
     beforeRouteEnter(to, from, next) {
         // 进入页面时，先将当前页面的 name 信息存入 keep-alive 全局状态
         next(vm => {
-            if (!vm.$store.state.settings.enableTabbar && !vm.dialogMode) {
+            if (!vm.$store.state.settings.enableTabbar) {
                 vm.$store.commit('keepAlive/add', 'TikuQuestionRepsList')
             }
         })
     },
     beforeRouteLeave(to, from, next) {
-        if (!this.$store.state.settings.enableTabbar && !this.dialogMode) {
+        if (!this.$store.state.settings.enableTabbar) {
             // 因为并不是所有的路由跳转都需要将当前页面进行缓存，例如最常见的情况，从列表页进入详情页，则需要将列表页缓存，而从列表页跳转到其它页面，则不需要将列表页缓存
             // 所以下面的代码意思就是，如果目标路由的 name 不在指定的数组内，则将当前页面的 name 从 keep-alive 中删除
-            if (!['XX'].includes(to.name)) {
+            if (!['TikuQuestionTestList'].includes(to.name)) {
                 // 注意：上面校验的是路由的 name ，下面记录的是当前页面的 name
                 this.$store.commit('keepAlive/remove', 'TikuQuestionRepsList')
             }
@@ -61,39 +70,23 @@ export default {
     },
     data() {
         return {
-            // 是否开启详情弹框模式
-            dialogMode: true,
-            // 详情弹框
-            detailFormDialog: {
-                visible: false,
-                id: ''
-            },
             // 搜索
             search: {
                 key: ''
             },
             // 列表数据
-            dataList: []
+            dataList: [],
+            searchMore: false
         }
     },
     mounted() {
         this.getDataList()
-        if (!this.dialogMode) {
-            this.$eventBus.$on('get-data-list', () => {
-                this.getDataList()
-            })
-        }
-    },
-    beforeDestroy() {
-        if (!this.dialogMode) {
-            this.$eventBus.$off('get-data-list')
-        }
     },
     methods: {
         getDataList() {
             this.loading = true
             let params = this.getParams()
-            this.search.title && (params.title = this.search.title)
+            this.search.title && (params.key = this.search.title)
             this.$api.get('/tms/reps/list', {
                 params
             }).then(res => {
@@ -102,41 +95,13 @@ export default {
                 this.pagination.total = res.data.totalElements
             })
         },
-        onCreate() {
-            if (!this.dialogMode) {
-                this.$router.push({
-                    name: 'XX'
-                })
-            } else {
-                this.detailFormDialog.id = ''
-                this.detailFormDialog.visible = true
-            }
-        },
-        onEdit(row) {
-            if (!this.dialogMode) {
-                this.$router.push({
-                    name: 'XX',
-                    params: {
-                        id: row.id
-                    }
-                })
-            } else {
-                this.detailFormDialog.id = row.id
-                this.detailFormDialog.visible = true
-            }
-        },
-        onDel(row) {
-            this.$confirm(`确认删除「${row.title}」吗？`, '确认信息').then(() => {
-                this.$api.post('mock/tiku/question_reps/delete', {
-                    id: row.id
-                }).then(() => {
-                    this.getDataList()
-                    this.$message.success({
-                        message: '模拟删除成功',
-                        center: true
-                    })
-                })
-            }).catch(() => {})
+        goTestPage(row) {
+            this.$router.push({
+                path: '/tms/test/question',
+                query: {
+                    testRepsId: row.id
+                }
+            })
         }
     }
 }

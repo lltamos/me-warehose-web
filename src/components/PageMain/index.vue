@@ -47,7 +47,7 @@ export default {
 <style lang="scss" scoped>
 .page-main {
     position: relative;
-    margin: 20px;
+    margin: 12px;
     padding: 20px;
     background-color: #fff;
     &.is-collaspe {
