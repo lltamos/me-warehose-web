@@ -53,19 +53,15 @@
                            class="pagination" background @size-change="onSizeChange" @current-change="onCurrentChange"
             />
         </page-main>
-        <FormDialog :id="detailFormDialog.id" :visible.sync="detailFormDialog.visible" @success="getDataList"/>
     </div>
 </template>
 
 <script>
 import paginationMixin from '@/mixins/pagination'
-import FormDialog from './components/FormDialog/index'
 
 export default {
     name: 'TikuQuestionTestList',
-    components: {
-        FormDialog
-    },
+
     mixins: [paginationMixin],
     beforeRouteEnter(to, from, next) {
         // 进入页面时，先将当前页面的 name 信息存入 keep-alive 全局状态
@@ -84,12 +80,6 @@ export default {
     },
     data() {
         return {
-            dialogMode: true,
-            // 详情弹框
-            detailFormDialog: {
-                visible: false,
-                id: ''
-            },
             // 搜索
             search: {
                 title: ''
@@ -114,7 +104,7 @@ export default {
             this.loading = true
             let params = this.getParams()
             this.search.title && (params.title = this.search.title)
-            this.$route.query.testRepsId && (params.testRepsId = this.$route.params.testRepsId)
+            this.$route.query.testRepsId && (params.testRepsId = this.$route.query.testRepsId)
             this.$api.get('/tms/test/list', {
                 params
             }).then(res => {
@@ -124,14 +114,10 @@ export default {
             })
         },
         onCreate() {
-            if (!this.dialogMode) {
-                this.$router.push({
-                    name: 'XX'
-                })
-            } else {
-                this.detailFormDialog.id = ''
-                this.detailFormDialog.visible = true
-            }
+            this.$router.push({
+                name: 'TikuQuestionTestDetail'
+            })
+
         },
         onEdit() {
 

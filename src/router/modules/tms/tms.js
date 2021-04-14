@@ -27,6 +27,16 @@ export default {
                 breadcrumb: true,
                 activeMenu: '/tms/test/reps'
             }
+        },
+        {
+            path: 'test/detail',
+            name: 'TikuQuestionTestDetail',
+            component: () => import(/* webpackChunkName: 'breadcrumb_example' */ '@/views/tiku/question_test/detail'),
+            meta: {
+                title: '试题详情',
+                sidebar: false,
+                breadcrumb: true
+            }
         }
     ]
 }
