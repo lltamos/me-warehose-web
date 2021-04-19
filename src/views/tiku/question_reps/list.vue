@@ -91,8 +91,8 @@ export default {
                 params
             }).then(res => {
                 this.loading = false
-                this.dataList = res.data.content
-                this.pagination.total = res.data.totalElements
+                this.dataList = res.data.list
+                this.pagination.total = res.data.totalRow
             })
         },
         goTestPage(row) {
