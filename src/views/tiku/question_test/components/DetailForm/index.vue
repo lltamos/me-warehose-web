@@ -1,8 +1,23 @@
 <template>
     <div v-loading="loading">
         <el-form ref="form" :model="form" :rules="rules" label-width="120px" label-suffix="：">
-            <el-form-item label="标题" prop="title">
-                <el-input v-model="form.title" placeholder="请输入标题" />
+            <el-form-item label="所属项目">
+                <el-link type="primary" disabled>默认链接</el-link>
+            </el-form-item>
+            <el-row>
+                <el-col :span="8">
+                    <el-form-item label="所属项目">
+                        <el-input type="primary" disabled>默认链接</el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                    <el-form-item label="所属课程">
+                        <el-link type="primary" disabled>默认链接</el-link>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            <el-form-item label="所属章节" prop="title">
+                <el-input v-model="form.title" placeholder="请输入标题"/>
             </el-form-item>
         </el-form>
     </div>
@@ -25,7 +40,7 @@ export default {
             },
             rules: {
                 title: [
-                    { required: true, message: '请输入标题', trigger: 'blur' }
+                    {required: true, message: '请输入标题', trigger: 'blur'}
                 ]
             }
         }
