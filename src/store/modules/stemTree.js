@@ -1,9 +1,18 @@
 import api from '@/api'
 
 const state = {
+    isGenerate: false,
     stemTreeKindTypeDate: {}
 }
-const getters = {}
+const getters = {
+    stemTreeKindTypeDate: function({dispatch}, state) {
+        if (!state.isGenerate) {
+            dispatch('getStemTreeKindTypeDate')
+        }
+        return state.stemTreeKindTypeDate
+    }
+
+}
 const actions = {
     getStemTreeKindTypeDate({commit}) {
         api.get('/constant/list', {}).then(res => {
@@ -14,6 +23,7 @@ const actions = {
 }
 const mutations = {
     setStemTreeKindTypeDate(state, stemTreeKindTypeDate) {
+        state.isGenerate = true
         state.stemTreeKindTypeDate = stemTreeKindTypeDate
     }
 }
