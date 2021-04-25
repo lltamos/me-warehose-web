@@ -140,6 +140,7 @@ export default {
                         } else {
                             storage.local.remove('login_account')
                         }
+                        this.$store.dispatch('stemTree/getStemTreeKindTypeDate')
                         this.$router.push({ path: this.redirect || '/' })
                     }).catch(() => {
                         this.loading = false

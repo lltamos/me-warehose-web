@@ -49,7 +49,7 @@ let globalSettings = {
     showCopyright: true,
     // 版权信息配置，格式为：Copyright © [dates] <company>
     copyrightDates: '2021',
-    copyrightCompany: 'Fantastic-admin',
+    copyrightCompany: 'me-admin',
     copyrightWebsite: 'https://hooray.gitee.io/fantastic-admin',
     // 是否开启导航搜索
     enableNavSearch: true,
@@ -74,7 +74,7 @@ let globalSettings = {
     // 控制台名称
     dashboardTitle: '控制台',
     // localStorage sessionStorage 前缀
-    storagePrefix: 'fa_',
+    storagePrefix: 'me_',
     // 是否开启扁平化路由，开启后三级以及三级以上的嵌套路由均为被处理成二级，但侧边栏导航的层级效果不变
     enableFlatRoutes: false,
     // 是否在非开发环境开启错误日志功能，具体业务代码在 ./util/error.log.js

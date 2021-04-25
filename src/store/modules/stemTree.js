@@ -6,17 +6,24 @@ const state = {
 }
 const getters = {
     stemTreeKindTypeDate: function({dispatch}, state) {
+        this.checkInit(dispatch)
+        return state.stemTreeKindTypeDate
+    },
+    stemKindType: function({dispatch}, id) {
+        this.checkInit(dispatch)
+        return state.stemTreeKindTypeDate.get(id)
+    },
+    checkInit: function({dispatch}) {
         if (!state.isGenerate) {
+            console.log('checkInit...')
             dispatch('getStemTreeKindTypeDate')
         }
-        return state.stemTreeKindTypeDate
     }
 
 }
 const actions = {
     getStemTreeKindTypeDate({commit}) {
-        api.get('/constant/list', {}).then(res => {
-            console.log(JSON.stringify(res))
+        api.get('/constant/listKindTypeTree', {}).then(res => {
             commit('setStemTreeKindTypeDate', res.data)
         })
     }

@@ -2,23 +2,23 @@
     <div v-loading="loading">
         <el-form ref="form" :model="form" :rules="rules" label-width="120px" label-suffix="：">
             <el-form-item label="所属项目">
-                <el-link type="primary" disabled>默认链接</el-link>
+                <el-link type="primary" disabled>自学考试</el-link>
             </el-form-item>
             <el-row>
                 <el-col :span="8">
-                    <el-form-item label="所属项目">
-                        <el-input type="primary" disabled>默认链接</el-input>
+                    <el-form-item label="所属课程">
+                        <el-select v-model="form.region" placeholder="请选择活动区域">
+                            <el-option label="区域一" value="shanghai"></el-option>
+                            <el-option label="区域二" value="beijing"></el-option>
+                        </el-select>
                     </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                    <el-form-item label="所属课程">
+                    <el-form-item label="所属章节">
                         <el-link type="primary" disabled>默认链接</el-link>
                     </el-form-item>
                 </el-col>
             </el-row>
-            <el-form-item label="所属章节" prop="title">
-                <el-input v-model="form.title" placeholder="请输入标题"/>
-            </el-form-item>
         </el-form>
     </div>
 </template>
@@ -42,10 +42,12 @@ export default {
                 title: [
                     {required: true, message: '请输入标题', trigger: 'blur'}
                 ]
-            }
+            },
+            courseList: []
         }
     },
     mounted() {
+        alert(JSON.stringify(this.$store.state.stemTree.stemTreeKindTypeDate))
         if (this.form.id != '') {
             this.getInfo()
         }
