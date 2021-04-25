@@ -6,7 +6,7 @@
         <page-main>
             <el-row>
                 <el-col :md="24" :lg="16">
-                    <DetailForm :id="$route.params.id" ref="form"/>
+                    <DetailForm :id="$route.params.id" ref="form" />
                 </el-col>
             </el-row>
         </page-main>

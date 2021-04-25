@@ -7,9 +7,12 @@
             <el-row>
                 <el-col :span="8">
                     <el-form-item label="所属课程">
-                        <el-select v-model="form.region" placeholder="请选择活动区域">
-                            <el-option label="区域一" value="shanghai"></el-option>
-                            <el-option label="区域二" value="beijing"></el-option>
+                        <el-select v-model="courseTypeId" placeholder="选择课程" filterable>
+                            <el-option v-for="courseType in courseList"
+                                       :key="courseType.id"
+                                       :label="courseType.kcName"
+                                       :value="courseType.id"
+                            />
                         </el-select>
                     </el-form-item>
                 </el-col>
@@ -24,11 +27,15 @@
 </template>
 
 <script>
+// import storage from '@/util/storage'
+// import http from '@/api/http'
+import result from '@/util/result'
+
 export default {
     props: {
         id: {
             type: [Number, String],
-            default: ''
+            require: false
         }
     },
     data() {
@@ -43,26 +50,34 @@ export default {
                     {required: true, message: '请输入标题', trigger: 'blur'}
                 ]
             },
-            courseList: []
+            courseList: [],
+            courseTypeId: ''
         }
     },
     mounted() {
-        alert(JSON.stringify(this.$store.state.stemTree.stemTreeKindTypeDate))
-        if (this.form.id != '') {
-            this.getInfo()
-        }
+        this.getHttpCourseType()
+        // if (this.form.id != '') {
+        //     this.getInfo()
+        // }
     },
     methods: {
-        getInfo() {
-            this.loading = true
-            this.$api.get('mock/tiku/question_test/detail', {
-                params: {
-                    id: this.form.id
-                }
-            }).then(res => {
-                this.loading = false
-                this.form.title = res.data.title
+        getHttpCourseType() {
+            result.api.getHttpCourseType().then(res => {
+                this.courseList = res
             })
+
+        },
+
+        getInfo() {
+            this.loading = false
+            // this.$api.get('mock/tiku/question_test/detail', {
+            //     params: {
+            //         id: this.form.id
+            //     }
+            // }).then(res => {
+            //     this.loading = false
+            //     this.form.title = res.data.title
+            // })
         },
         submit(callback) {
             if (this.form.id == '') {

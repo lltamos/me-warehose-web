@@ -1,13 +1,13 @@
 <template>
     <div>
-        <page-header title="题库管理"/>
+        <page-header title="题库管理" />
         <page-main>
             <search-bar show-more @toggle="searchMore = $event">
                 <el-form :model="search" size="small" label-width="120px">
                     <el-row>
                         <el-col :span="12">
                             <el-form-item label="试题库名称">
-                                <el-input v-model="search.name" placeholder="请输入试题库名称，支持模糊查询" clearable/>
+                                <el-input v-model="search.name" placeholder="请输入试题库名称，支持模糊查询" clearable />
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -19,16 +19,16 @@
             <el-table ref="table" v-loading="loading" class="list-table" :data="dataList" border stripe
                       highlight-current-row
             >
-                <el-table-column prop="id" width="75" label="ID"/>
-                <el-table-column prop="name" min-width="125" label="题库名"/>
-                <el-table-column prop="tmsKindTypeStr" label="所属学院"/>
-                <el-table-column prop="singleChoice" label="单选题"/>
-                <el-table-column prop="multipleChoice" label="多选题"/>
-                <el-table-column prop="verdict" label="判断题"/>
-                <el-table-column prop="interpose" label="填空题"/>
-                <el-table-column prop="shortAnswer" label="简答题"/>
-                <el-table-column prop="groupQuestion" label="组合题"/>
-                <el-table-column prop="totalQuestion" label="总题数"/>
+                <el-table-column prop="id" width="75" label="ID" />
+                <el-table-column prop="name" min-width="125" label="题库名" />
+                <el-table-column prop="tmsKindTypeStr" label="所属学院" />
+                <el-table-column prop="singleChoice" label="单选题" />
+                <el-table-column prop="multipleChoice" label="多选题" />
+                <el-table-column prop="verdict" label="判断题" />
+                <el-table-column prop="interpose" label="填空题" />
+                <el-table-column prop="shortAnswer" label="简答题" />
+                <el-table-column prop="groupQuestion" label="组合题" />
+                <el-table-column prop="totalQuestion" label="总题数" />
                 <el-table-column label="操作" width="250" align="center">
                     <template slot-scope="scope">
                         <el-button type="primary" plain @click="goTestPage(scope.row)">试题管理</el-button>
@@ -45,6 +45,7 @@
 
 <script>
 import paginationMixin from '@/mixins/pagination'
+import storage from '@/util/storage'
 
 export default {
     name: 'TikuQuestionRepsList',
@@ -82,6 +83,9 @@ export default {
     mounted() {
         this.getDataList()
     },
+    beforeDestroy() {
+        storage.session.remove('testRepsParam')
+    },
     methods: {
         getDataList() {
             this.loading = true
@@ -96,12 +100,12 @@ export default {
             })
         },
         goTestPage(row) {
-            this.$router.push({
-                path: '/tms/test/question',
-                query: {
-                    testRepsId: row.id
-                }
-            })
+            storage.session.set('testRepsParam', JSON.stringify({
+                'testRepsId': row.id,
+                'tmsKindTypeId': row.tmsKindTypeId
+            }))
+            this.$router.push({path: '/tms/test/question'})
+
         }
     }
 }

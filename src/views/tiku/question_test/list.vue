@@ -1,6 +1,6 @@
 <template>
     <div>
-        <page-header title="试题列表管理"/>
+        <page-header title="试题列表管理" />
         <page-main>
             <el-button type="primary" icon="el-icon-plus" @click="onCreate">新增试题</el-button>
             <search-bar>
@@ -32,14 +32,14 @@
                       highlight-current-row @sort-change="onSortChange"
                       @selection-change="batch.selectionDataList = $event"
             >
-                <el-table-column v-if="batch.enable" type="selection" width="40"/>
-                <el-table-column prop="id" width="75" label="ID"/>
+                <el-table-column v-if="batch.enable" type="selection" width="40" />
+                <el-table-column prop="id" width="75" label="ID" />
                 <el-table-column prop="tigan" label="题干">
                     <template slot-scope="scope">
-                        <div v-html="scope.row.tigan"></div>
+                        <div v-html="scope.row.tigan" />
                     </template>
                 </el-table-column>
-                <el-table-column prop="txStr" width="75" label="题型"/>
+                <el-table-column prop="txStr" width="75" label="题型" />
 
                 <el-table-column label="操作" width="250" align="center">
                     <template slot-scope="scope">
@@ -58,6 +58,7 @@
 
 <script>
 import paginationMixin from '@/mixins/pagination'
+import storage from '@/util/storage'
 
 export default {
     name: 'TikuQuestionTestList',
@@ -66,15 +67,19 @@ export default {
     beforeRouteEnter(to, from, next) {
         // 进入页面时，先将当前页面的 name 信息存入 keep-alive 全局状态
         next(vm => {
-            if (!vm.$store.state.settings.enableTabbar && !vm.dialogMode) {
+            if (!vm.$store.state.settings.enableTabbar) {
                 vm.$store.commit('keepAlive/add', 'TikuQuestionTestList')
             }
         })
     },
     beforeRouteLeave(to, from, next) {
-        if (!this.$store.state.settings.enableTabbar && !this.dialogMode) {
+        if (!this.$store.state.settings.enableTabbar) {
             // 因为并不是所有的路由跳转都需要将当前页面进行缓存，例如最常见的情况，从列表页进入详情页，则需要将列表页缓存，而从列表页跳转到其它页面，则不需要将列表页缓存
             // 所以下面的代码意思就是，如果目标路由的 name 不在指定的数组内，则将当前页面的 name 从 keep-alive 中删除
+            if (!['TikuQuestionTestDetail'].includes(to.name)) {
+                // 注意：上面校验的是路由的 name ，下面记录的是当前页面的 name
+                this.$store.commit('keepAlive/remove', 'TikuQuestionTestList')
+            }
         }
         next()
     },
@@ -97,14 +102,14 @@ export default {
         this.getDataList()
     },
     beforeDestroy() {
-
     },
     methods: {
         getDataList() {
             this.loading = true
             let params = this.getParams()
             this.search.title && (params.title = this.search.title)
-            this.$route.query.testRepsId && (params.testRepsId = this.$route.query.testRepsId)
+            let testRepsParam = JSON.parse(storage.session.get('testRepsParam'))
+            testRepsParam.testRepsId && (params.testRepsId = testRepsParam.testRepsId)
             this.$api.get('/tms/test/list', {
                 params
             }).then(res => {
@@ -114,10 +119,7 @@ export default {
             })
         },
         onCreate() {
-            this.$router.push({
-                name: 'TikuQuestionTestDetail'
-            })
-
+            this.$router.push({name: 'TikuQuestionTestDetail'})
         },
         onEdit() {
 

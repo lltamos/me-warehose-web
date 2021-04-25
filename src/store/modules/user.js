@@ -37,7 +37,7 @@ const actions = {
         commit('removeUserData')
         commit('menu/invalidRoutes', null, {root: true})
         commit('tabbar/clean', null, {root: true})
-        // todo 清除stemTree数据缓存
+        commit('stemTree/clean', null, {root: true})
 
     },
     // 获取我的权限

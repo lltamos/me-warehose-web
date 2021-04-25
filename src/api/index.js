@@ -60,7 +60,7 @@ api.interceptors.response.use(
                 return false
             }
             Message.error({
-                message: response.data.error,
+                message: response.data.message,
                 type: 'warning'
             })
             return Promise.reject(response.data)
