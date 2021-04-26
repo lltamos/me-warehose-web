@@ -1,12 +1,12 @@
 <template>
     <div>
-        <page-header :title="$route.name == 'routerName' ? '新增试题' : '编辑试题'">
+        <page-header :title="title">
             <el-button icon="el-icon-arrow-left" size="mini" round @click="$router.go(-1)">返 回</el-button>
         </page-header>
         <page-main>
             <el-row>
                 <el-col :md="24" :lg="16">
-                    <DetailForm :id="$route.params.id" ref="form" />
+                    <DetailForm ref="form" :tms-test-id="$route.params.tmsTestId" />
                 </el-col>
             </el-row>
         </page-main>
@@ -28,7 +28,13 @@ export default {
     },
     data() {
         return {
-            test: {}
+            test: {},
+            tmsTestId: this.$route.params.tmsTestId
+        }
+    },
+    computed: {
+        title: function() {
+            return this.$lodash.isEmpty(this.tmsTestId) ? '试题新增' : '试题详情'
         }
     },
     mounted() {

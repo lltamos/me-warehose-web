@@ -45,9 +45,9 @@ import Contextmenu from 'vue-contextmenujs'
 
 Vue.use(Contextmenu)
 
-// 全局注册outils工具类
-const outils = require('outils')
-Vue.use(outils)
+// 全局注册lodash工具类
+import lodash from 'lodash'
+Vue.prototype.$lodash = lodash
 
 // 全局组件自动注册
 import './components/autoRegister'

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <page-header title="试题列表管理" />
+        <page-header title="试题管理" />
         <page-main>
             <el-button type="primary" icon="el-icon-plus" @click="onCreate">新增试题</el-button>
             <search-bar>
@@ -121,8 +121,13 @@ export default {
         onCreate() {
             this.$router.push({name: 'TikuQuestionTestDetail'})
         },
-        onEdit() {
-
+        onEdit(row) {
+            this.$router.push({
+                name: 'TikuQuestionTestDetail',
+                params: {
+                    tmsTestId: row.id
+                }
+            })
         },
         onDel(row) {
             this.$confirm(`确认删除「${row.title}」吗？`, '确认信息').then(() => {

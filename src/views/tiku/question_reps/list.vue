@@ -7,12 +7,12 @@
                     <el-row>
                         <el-col :span="12">
                             <el-form-item label="试题库名称">
-                                <el-input v-model="search.name" placeholder="请输入试题库名称，支持模糊查询" clearable />
+                                <el-input v-model="search.title" placeholder="请输入试题库名称，支持模糊查询" clearable />
                             </el-form-item>
                         </el-col>
                     </el-row>
                     <el-form-item>
-                        <el-button type="primary" icon="el-icon-search">筛选</el-button>
+                        <el-button type="primary" icon="el-icon-search" @click="getDataList">筛选</el-button>
                     </el-form-item>
                 </el-form>
             </search-bar>
@@ -73,7 +73,7 @@ export default {
         return {
             // 搜索
             search: {
-                key: ''
+                title: ''
             },
             // 列表数据
             dataList: [],
