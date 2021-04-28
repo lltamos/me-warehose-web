@@ -6,7 +6,11 @@
         <page-main>
             <el-row>
                 <el-col :md="24" :lg="16">
-                    <DetailForm ref="form" :tms-test-id="$route.params.tmsTestId" />
+                    <DetailForm ref="form"
+                                :tms-test-id="$route.params.tmsTestId"
+                                :tms-course-type-id="$route.params.tmsCourseTypeId"
+                                :tms-chapter-type-id="$route.params.tmsChapterTypeId"
+                    />
                 </el-col>
             </el-row>
         </page-main>
@@ -18,7 +22,6 @@
 </template>
 
 <script>
-import tool from '@/util/tool'
 import DetailForm from './components/DetailForm/index'
 
 export default {
@@ -29,7 +32,9 @@ export default {
     data() {
         return {
             test: {},
-            tmsTestId: this.$route.params.tmsTestId
+            tmsTestId: this.$route.params.tmsTestId,
+            tmsCourseTypeId: this.$route.params.tmsCourseTypeId,
+            tmsChapterTypeId: this.$route.params.tmsChapterTypeId
         }
     },
     computed: {
@@ -38,6 +43,7 @@ export default {
         }
     },
     mounted() {
+        alert(this.tmsCourseTypeId)
     },
     methods: {
         onSubmit() {
@@ -48,18 +54,6 @@ export default {
         },
         onCancel() {
             this.$router.back()
-        },
-        getDetail(id) {
-            if (tool.assetIsNull(id)) {
-                return false
-            }
-            let params = this.getParams()
-            this.api.get('/tms/test/detail', {
-                params
-            }).then(res => {
-                this.test = res.data
-
-            })
         }
     }
 }

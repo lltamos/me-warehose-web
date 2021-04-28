@@ -125,7 +125,9 @@ export default {
             this.$router.push({
                 name: 'TikuQuestionTestDetail',
                 params: {
-                    tmsTestId: row.id
+                    tmsTestId: row.id,
+                    tmsCourseTypeId: row.tmsCourseTypeId,
+                    tmsChapterTypeId: row.tmsChapterTypeId
                 }
             })
         },

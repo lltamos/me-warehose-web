@@ -53,7 +53,7 @@ export default {
                 language_url: 'tinymce/langs/zh_CN.js',
                 language: 'zh_CN',
                 skin_url: 'tinymce/skins/ui/oxide',
-                min_height: 250,
+                min_height: 120,
                 max_height: 600,
                 selector: 'textarea',
                 plugins: 'autolink autoresize contextmenu fullscreen hr image imagetools insertdatetime link lists media preview table textcolor wordcount code searchreplace',

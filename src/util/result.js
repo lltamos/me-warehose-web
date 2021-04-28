@@ -8,6 +8,10 @@ result.api = {
         let testRepsParam = JSON.parse(storage.session.get('testRepsParam'))
         let result = await http.constants.getHttpCourseType(testRepsParam.testRepsId)
         return result
+    },
+    getHttpChapterType: async function(courseTypeId) {
+        let result = await http.constants.getHttpChapterType(courseTypeId)
+        return result
     }
 }
 
