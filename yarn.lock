@@ -10884,6 +10884,11 @@
   "resolved" "https://registry.npm.taobao.org/vue-cookies/download/vue-cookies-1.7.4.tgz"
   "version" "1.7.4"
 
+"vue-elementui-skeleton@^1.0.2":
+  "integrity" "sha1-GTVSeHO7SllcriCdFU0vBlu7Ge0="
+  "resolved" "https://registry.nlark.com/vue-elementui-skeleton/download/vue-elementui-skeleton-1.0.2.tgz"
+  "version" "1.0.2"
+
 "vue-eslint-parser@^7.6.0":
   "integrity" "sha1-AeoaKTL1gf8kQzZWXXEoAfj3JWE="
   "resolved" "https://registry.npm.taobao.org/vue-eslint-parser/download/vue-eslint-parser-7.6.0.tgz?cache=0&sync_timestamp=1614679548045&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvue-eslint-parser%2Fdownload%2Fvue-eslint-parser-7.6.0.tgz"

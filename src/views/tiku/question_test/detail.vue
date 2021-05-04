@@ -43,7 +43,6 @@ export default {
         }
     },
     mounted() {
-        alert(this.tmsCourseTypeId)
     },
     methods: {
         onSubmit() {

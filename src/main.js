@@ -47,6 +47,7 @@ Vue.use(Contextmenu)
 
 // 全局注册lodash工具类
 import lodash from 'lodash'
+
 Vue.prototype.$lodash = lodash
 
 // 全局组件自动注册
@@ -65,6 +66,11 @@ import './assets/styles/reset.scss'
 import './util/error.log'
 
 import './mock'
+
+// 骨架屏
+import VueElementUISkeleton from 'vue-elementui-skeleton'
+
+Vue.use(VueElementUISkeleton, {})
 
 Vue.config.productionTip = false
 

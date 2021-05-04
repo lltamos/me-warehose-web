@@ -31,9 +31,9 @@
                 </el-col>
             </el-row>
         </el-form>
-        <el-form ref="form2" :model="form" :rules="rules" label-position="top" label-width="80px">
-            <el-tabs class="tabsClass" tab-position="top" lazy>
-                <el-tab-pane label="单选题">
+        <el-form ref="form2" label-position="top" label-width="80px">
+            <el-tabs v-model="form.tiXing" v-skeleton="loading" class="tabsClass" tab-position="top">
+                <el-tab-pane name="0" label="单选题" lazy>
                     <el-form-item label="题干">
                         <Editor value="form.tiGan" />
                     </el-form-item>
@@ -52,7 +52,7 @@
                         <Editor />
                     </el-form-item>
                 </el-tab-pane>
-                <el-tab-pane label="多选题">
+                <el-tab-pane name="1" label="多选题" lazy>
                     <el-form-item label="题干">
                         <Editor value="form.tiGan" />
                     </el-form-item>
@@ -71,7 +71,7 @@
                         <Editor />
                     </el-form-item>
                 </el-tab-pane>
-                <el-tab-pane label="判断题">
+                <el-tab-pane name="2" label="判断题" lazy>
                     <el-form-item label="题干">
                         <Editor value="form.tiGan" />
                     </el-form-item>
@@ -85,7 +85,7 @@
                         <Editor />
                     </el-form-item>
                 </el-tab-pane>
-                <el-tab-pane label="填空题">
+                <el-tab-pane name="3" label="填空题" lazy>
                     <el-form-item label="题干">
                         <Editor value="form.tiGan" />
                     </el-form-item>
@@ -96,7 +96,7 @@
                         <Editor />
                     </el-form-item>
                 </el-tab-pane>
-                <el-tab-pane label="主观题">
+                <el-tab-pane name="4" label="主观题" lazy>
                     <el-form-item label="题干">
                         <Editor />
                     </el-form-item>
@@ -107,7 +107,7 @@
                         <Editor />
                     </el-form-item>
                 </el-tab-pane>
-                <el-tab-pane label="组合题">
+                <el-tab-pane name="5" label="组合题" lazy>
                     <el-form-item label="题干">
                         <Editor value="form.tiGan" />
                     </el-form-item>
@@ -141,7 +141,7 @@ export default {
     },
     data() {
         return {
-            loading: false,
+            loading: true,
             form: {
                 courseTypeId: this.courseTypeId,
                 chapterTypeId: this.chapterTypeId,
@@ -150,7 +150,8 @@ export default {
                 tigan: '',
                 txId: '',
                 analyse: '',
-                answer: ''
+                answer: '',
+                tiXing: '1'
             },
             rules: {
                 title: [
@@ -159,12 +160,15 @@ export default {
             },
             courseList: [],
             chapterList: []
+
         }
     },
     mounted() {
         this.getHttpCourseType()
         if (this.form.tmsTestId != '') {
             this.getInfo()
+        } else {
+            // this.loading = false
         }
     },
     methods: {
