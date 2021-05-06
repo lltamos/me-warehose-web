@@ -5,8 +5,8 @@ const result = {}
 
 result.api = {
     getHttpCourseType: async function() {
-        let testRepsParam = JSON.parse(storage.session.get('testRepsParam'))
-        let result = await http.constants.getHttpCourseType(testRepsParam.testRepsId)
+        let tmsKindTypeId = storage.session.get('tmsKindTypeId')
+        let result = await http.constants.getHttpCourseType(tmsKindTypeId)
         return result
     },
     getHttpChapterType: async function(courseTypeId) {

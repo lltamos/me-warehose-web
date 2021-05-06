@@ -108,8 +108,8 @@ export default {
             this.loading = true
             let params = this.getParams()
             this.search.title && (params.title = this.search.title)
-            let testRepsParam = JSON.parse(storage.session.get('testRepsParam'))
-            testRepsParam.testRepsId && (params.testRepsId = testRepsParam.testRepsId)
+            let testRepsId = storage.session.get('testRepsId')
+            testRepsId && (params.testRepsId = testRepsId)
             this.$api.get('/tms/test/list', {
                 params
             }).then(res => {
@@ -125,9 +125,7 @@ export default {
             this.$router.push({
                 name: 'TikuQuestionTestDetail',
                 params: {
-                    tmsTestId: row.id,
-                    tmsCourseTypeId: row.tmsCourseTypeId,
-                    tmsChapterTypeId: row.tmsChapterTypeId
+                    tmsTestId: row.id
                 }
             })
         },

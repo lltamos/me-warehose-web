@@ -8,8 +8,6 @@
                 <el-col :md="24" :lg="16">
                     <DetailForm ref="form"
                                 :tms-test-id="$route.params.tmsTestId"
-                                :tms-course-type-id="$route.params.tmsCourseTypeId"
-                                :tms-chapter-type-id="$route.params.tmsChapterTypeId"
                     />
                 </el-col>
             </el-row>
@@ -32,9 +30,7 @@ export default {
     data() {
         return {
             test: {},
-            tmsTestId: this.$route.params.tmsTestId,
-            tmsCourseTypeId: this.$route.params.tmsCourseTypeId,
-            tmsChapterTypeId: this.$route.params.tmsChapterTypeId
+            tmsTestId: this.$route.params.tmsTestId
         }
     },
     computed: {

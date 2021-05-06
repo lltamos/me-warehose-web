@@ -84,7 +84,8 @@ export default {
         this.getDataList()
     },
     beforeDestroy() {
-        storage.session.remove('testRepsParam')
+        storage.session.remove('tmsKindTypeId')
+        storage.session.remove('testRepsId')
     },
     methods: {
         getDataList() {
@@ -100,10 +101,8 @@ export default {
             })
         },
         goTestPage(row) {
-            storage.session.set('testRepsParam', JSON.stringify({
-                'testRepsId': row.id,
-                'tmsKindTypeId': row.tmsKindTypeId
-            }))
+            storage.session.set('testRepsId', row.id,)
+            storage.session.set('tmsKindTypeId', row.tmsKindTypeId)
             this.$router.push({path: '/tms/test/question'})
 
         }
