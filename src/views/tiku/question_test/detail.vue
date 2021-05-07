@@ -6,9 +6,7 @@
         <page-main>
             <el-row>
                 <el-col :md="24" :lg="16">
-                    <DetailForm ref="form"
-                                :tms-test-id="$route.params.tmsTestId"
-                    />
+                    <DetailForm ref="form" />
                 </el-col>
             </el-row>
         </page-main>
@@ -27,15 +25,9 @@ export default {
     components: {
         DetailForm
     },
-    data() {
-        return {
-            test: {},
-            tmsTestId: this.$route.params.tmsTestId
-        }
-    },
     computed: {
         title: function() {
-            return this.$lodash.isEmpty(this.tmsTestId) ? '试题新增' : '试题详情'
+            return this.$lodash.isNil(this.$route.params.tmsTestId) ? '试题新增' : '试题详情'
         }
     },
     mounted() {

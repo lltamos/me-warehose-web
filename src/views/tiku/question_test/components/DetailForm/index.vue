@@ -2,16 +2,16 @@
     <div v-loading="loading">
         <el-form ref="form" label-position="left" :model="form" :rules="rules" label-width="120px" label-suffix="：">
             <el-form-item label="所属项目">
-                <el-link type="primary" disabled>专本科学院</el-link>
+                <el-link type="primary" disabled>{{ getKindTypeName() }}</el-link>
             </el-form-item>
             <el-row>
                 <el-col :span="8">
                     <el-form-item label="所属课程">
-                        <el-select v-model="form.courseTypeId" placeholder="选择课程" filterable
+                        <el-select v-model="form.tmsCourseTypeId" placeholder="选择课程" filterable
                                    @change="getHttpChapterType"
                         >
-                            <el-option v-for="courseType in courseList"
-                                       :key="courseType.id"
+                            <el-option v-for="(courseType,index) in courseList"
+                                       :key="index"
                                        :label="courseType.kcName"
                                        :value="courseType.id"
                             />
@@ -54,27 +54,22 @@ import result from '@/util/result'
 import Editor from '@/components/Editor'
 import store from '@/store/modules/stemTree'
 import storage from '@/util/storage'
+
 export default {
     components: {Editor},
-    props: {
-        tmsTestId: {
-            type: [Number, String],
-            require: false
-        }
-    },
     data() {
         return {
-            loading: true,
+            loading: false,
             form: {
-                tmsKindTypeId: '',
-                tmsCourseTypeId: '',
-                tmsChapterTypeId: '',
-                tmsTestId: this.tmsTestId,
+                tmsKindTypeId: storage.session.get('tmsKindTypeId'),
+                tmsCourseTypeId: null,
+                tmsChapterTypeId: null,
+                tmsTestId: this.$route.params.tmsTestId,
                 tigan: '',
                 txId: '',
                 analyse: '',
                 answer: '',
-                tiXing: '0',
+                tiXing: 0,
                 options: '',
                 optSize: ''
             },
@@ -88,18 +83,13 @@ export default {
 
         }
     },
-    computed: {
-        getKindTypeName() {
-
-            return 1
-        }
-    },
     mounted() {
-        store.getters.getStemKindTypeName(storage.session.get('tmsKindTypeId'))
         this.getHttpCourseType()
-        if (this.form.tmsTestId != '') {
+        this.getKindTypeName()
+        if (!this.$lodash.isNil(this.form.tmsTestId)) {
             this.getInfo()
         }
+
     },
     methods: {
         getHttpChapterType(courseTypeId) {
@@ -111,6 +101,11 @@ export default {
             result.api.getHttpCourseType().then(res => {
                 this.courseList = res
             })
+        },
+
+        getKindTypeName() {
+            let kindType = store.getters.getStemKindTypeName(this.form.tmsKindTypeId)
+            return this.$lodash.isNull(kindType) ? '-' : kindType.name
         },
 
         getInfo() {
@@ -126,10 +121,10 @@ export default {
                 this.form.answer = res.data.answer
                 this.form.options = res.data.options
                 this.form.optSize = res.data.optSize
-                this.form.courseTypeId = res.data.tmsCourseTypeId
-                this.form.chapterTypeId = res.data.tmsChapterTypeId
+                this.form.tmsCourseTypeId = Number(res.data.tmsCourseTypeId)
+                this.form.tmsChapterTypeId = res.data.tmsChapterTypeId
+                this.form.tmsKindTypeId = res.data.tmsKindTypeId
                 this.loading = false
-
             })
         },
         submit(callback) {

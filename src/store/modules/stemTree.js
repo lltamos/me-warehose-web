@@ -7,14 +7,16 @@ const state = {
 const getters = {
     getStemKindTypeName: function(id) {
         // todo 当为空时，登录状态改编为未登录，使其重新登陆
-        for (let item in state.stemTreeKindTypeDate) {
-            console.log(item.tid + '&&&&&' + id)
-            if (item.tid === id) {
-                console.log(JSON.stringify(item))
-                return item
+        for (let row of state.stemTreeKindTypeDate) {
+            if (row.tid != id) {
+                for (let item of row.children) {
+                    if (item.tid == id) {
+                        return item
+                    }
+                }
             }
+            return row
         }
-        return null
     },
     getIsGenerate: function() {
         return state.isGenerate

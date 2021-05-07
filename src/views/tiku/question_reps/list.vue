@@ -102,7 +102,7 @@ export default {
         },
         goTestPage(row) {
             storage.session.set('testRepsId', row.id,)
-            storage.session.set('tmsKindTypeId', row.tmsKindTypeId)
+            storage.session.set('tmsKindTypeId', row.tmsCourseTypeId)
             this.$router.push({path: '/tms/test/question'})
 
         }
